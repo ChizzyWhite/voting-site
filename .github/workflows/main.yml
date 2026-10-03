@@ -1,0 +1,24 @@
+name: VoteSphere CI/CD
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t votesphere-web .
+
+      - name: Build worker image
+        run: docker build -t votesphere-worker ./worker
+
+      - name: Check Docker images
+        run: docker images

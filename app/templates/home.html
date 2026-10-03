@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}VoteSphere — 2026 Student Election{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <div class="eyebrow">2026 STUDENT LEADERSHIP ELECTION</div>
+        <h1>Your voice.<br><span>Your choice.</span></h1>
+        <p>{{ election.description }}</p>
+        <div class="hero-actions">
+            <a class="primary-button" href="{{ url_for('main.login') }}">Cast your vote →</a>
+            <a class="ghost-button" href="{{ url_for('main.results') }}">View results</a>
+        </div>
+    </div>
+    <div class="hero-card">
+        <div class="status-dot">● Election is open</div>
+        <h3>Live Election</h3>
+        <div class="big-number">{{ total_votes }}</div>
+        <p>votes recorded so far</p>
+        <div class="mini-line"></div>
+        <div class="secure-row"><span>✓</span> One vote per voter</div>
+        <div class="secure-row"><span>✓</span> PostgreSQL protected storage</div>
+        <div class="secure-row"><span>✓</span> Redis event processing</div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <div>
+            <div class="eyebrow">HOW IT WORKS</div>
+            <h2>Simple for voters. Strong behind the scenes.</h2>
+        </div>
+    </div>
+    <div class="steps">
+        <div class="step"><b>01</b><h3>Sign in</h3><p>Use your voter account to access the election.</p></div>
+        <div class="step"><b>02</b><h3>Choose</h3><p>Review candidate profiles and select one candidate.</p></div>
+        <div class="step"><b>03</b><h3>Submit</h3><p>Your vote is stored and an event is sent to Redis.</p></div>
+    </div>
+</section>
+{% endblock %}

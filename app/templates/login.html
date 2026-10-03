@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Sign in — VoteSphere{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+    <div class="auth-card">
+        <div class="brand-mark large">V</div>
+        <div class="eyebrow">VOTER ACCESS</div>
+        <h1>Welcome back.</h1>
+        <p class="muted">Sign in to participate in the 2026 election.</p>
+        <form method="POST">
+            <label>Email address</label>
+            <input type="email" name="email" placeholder="voter1@example.com" required>
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Password123!" required>
+            <button class="primary-button full" type="submit">Sign in →</button>
+        </form>
+        <div class="demo-note">
+            <strong>Demo account</strong><br>
+            voter1@example.com<br>
+            Password123!
+        </div>
+    </div>
+</section>
+{% endblock %}

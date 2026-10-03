@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — VoteSphere{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <div class="eyebrow">VOTER DASHBOARD</div>
+        <h1>Hello, {{ session.get('user_name') }}.</h1>
+        <p>Review the candidates and make your choice.</p>
+    </div>
+    <div class="pill">● Election open</div>
+</section>
+
+{% if already_voted %}
+<div class="success-banner">
+    <strong>Your vote has been recorded.</strong>
+    You have already voted in this election. You can view the public results below.
+</div>
+{% endif %}
+
+<section class="candidate-grid">
+{% for candidate in candidates %}
+    <article class="candidate-card">
+        <img src="{{ candidate.photo }}" alt="{{ candidate.name }}">
+        <div class="candidate-body">
+            <span class="candidate-position">{{ candidate.position }}</span>
+            <h2>{{ candidate.name }}</h2>
+            <p>{{ candidate.manifesto }}</p>
+            {% if not already_voted %}
+            <form method="POST" action="{{ url_for('main.vote', candidate_id=candidate.id) }}"
+                  onsubmit="return confirm('Submit your vote for {{ candidate.name }}? You cannot vote again in this election.');">
+                <button class="vote-button" type="submit">Vote for {{ candidate.name.split()[0] }} →</button>
+            </form>
+            {% else %}
+            <button class="vote-button disabled" disabled>Vote submitted</button>
+            {% endif %}
+        </div>
+    </article>
+{% endfor %}
+</section>
+
+<section class="results-preview">
+    <div>
+        <div class="eyebrow">CURRENT RESULTS</div>
+        <h2>{{ total_votes }} total votes</h2>
+    </div>
+    {% for item in results %}
+    <div class="result-row">
+        <div class="result-label"><span>{{ item.candidate.name }}</span><strong>{{ item.count }}</strong></div>
+        <div class="bar"><span style="width: {{ (item.count / total_votes * 100) if total_votes else 0 }}%"></span></div>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

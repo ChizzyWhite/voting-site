@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Admin — VoteSphere{% endblock %}
+{% block content %}
+<section class="page-head">
+    <div>
+        <div class="eyebrow">ADMINISTRATION</div>
+        <h1>Election overview</h1>
+        <p>Monitor the current election from one dashboard.</p>
+    </div>
+</section>
+
+<section class="stat-grid">
+    <div class="stat-card"><span>Total voters</span><strong>{{ voters }}</strong></div>
+    <div class="stat-card"><span>Votes cast</span><strong>{{ total_votes }}</strong></div>
+    <div class="stat-card"><span>Candidates</span><strong>{{ stats|length }}</strong></div>
+    <div class="stat-card"><span>Status</span><strong class="green">OPEN</strong></div>
+</section>
+
+<section class="admin-panel">
+    <div class="eyebrow">CANDIDATE PERFORMANCE</div>
+    {% for candidate, count in stats %}
+    <div class="admin-row">
+        <div><strong>{{ candidate.name }}</strong><small>{{ candidate.position }}</small></div>
+        <strong>{{ count }} votes</strong>
+    </div>
+    {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,52 @@
+services:
+  web:
+    build: .
+    container_name: votesphere-web
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://votesphere:votesphere@db:5432/votesphere
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: change-this-demo-secret
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  worker:
+    build: ./worker
+    container_name: votesphere-worker
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DATABASE_URL: postgresql://votesphere:votesphere@db:5432/votesphere
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: votesphere-db
+    environment:
+      POSTGRES_DB: votesphere
+      POSTGRES_USER: votesphere
+      POSTGRES_PASSWORD: votesphere
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U votesphere -d votesphere"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: votesphere-redis
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
