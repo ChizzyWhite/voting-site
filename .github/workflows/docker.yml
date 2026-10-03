@@ -1,0 +1,35 @@
+name: voting-practice
+
+on:
+ push:
+  branches:
+   - main
+   
+jobs:
+ test:
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Step One
+      uses: actions/checkout@v4
+
+    - name: Build Docker Image
+      run: docker build -t project-practice
+
+    - name: Tag Docker Image
+      run: dockr tag project-practice ${{ secrets.DOCKERHUB_USERNAME }}/project-practice:latest
+
+    - name: log in to Docker Hub
+      uses: docker/login-action@v4
+      with:
+       username: ${{ secrets.DOCKERHUB_USERNAME }}
+       password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push Docker Image
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/project-practice:latest
+
+  
+
+    
+      
+  
