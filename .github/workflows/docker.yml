@@ -1,0 +1,35 @@
+name: voting-practice
+
+on:
+ push:
+  branches:
+   - main
+   
+jobs:
+ test:
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: Step One
+      uses: actions/checkout@v4
+
+    - name: Build Docker Image
+      run: docker build -t voting-test .
+
+    - name: Tag Docker Image
+      run: docker tag voting-test ${{ secrets.DOCKERHUB_USERNAME }}/voting-test:latest
+
+    - name: log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+       username: ${{ secrets.DOCKERHUB_USERNAME }}
+       password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Push Docker Image
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/voting-test:latest
+
+  
+
+    
+      
+  
